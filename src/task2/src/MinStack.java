@@ -3,22 +3,15 @@ package task2.src;
 import java.util.Stack;
 
 public class MinStack {
-    public int minElement;
-    Stack<Integer> stack = new Stack<>();
-    public void push(Integer x)
-    {
-        if (stack.isEmpty()) {
-            minElement = x;
-            stack.push(x);
-            System.out.println("Number Inserted: " + x);
-            return;
-        }
+    private Stack<Integer> stack = new Stack<>();
+    private Stack<Integer> minStack = new Stack<>();
 
-        if (x < minElement) {
-            minElement = x;
+    public void push(Integer x) {
+        stack.push(x);
+
+        if (minStack.isEmpty() || x <= minStack.peek()) {
+            minStack.push(x);
         }
-        else
-            stack.push(x);
 
         System.out.println("Number Inserted: " + x);
     }
@@ -30,16 +23,28 @@ public class MinStack {
         }
 
         int removedValue = stack.pop();
-        System.out.println(removedValue);
-//        if (!stack.isEmpty() && removedValue == stack.peek()) {
-//            stack.pop();
-//            System.out.println("The top element " + removedValue + " is removed");
-//        }
+        System.out.println("The top element " + removedValue + " is removed");
 
+        if (!minStack.isEmpty() && removedValue == minStack.peek()) {
+            minStack.pop();
+        }
     }
 
+    // Get the minimum element
     public void min() {
-        System.out.println("The minimum value is: " + minElement);
+        if (minStack.isEmpty()) {
+            System.out.println("The Stack is empty, no minimum value.");
+        } else {
+            System.out.println("The minimum value is: " + minStack.peek());
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
     }
 
     public static void main(String[] args) {
@@ -53,4 +58,5 @@ public class MinStack {
         ms.pop();
         ms.min();
     }
+
 }
